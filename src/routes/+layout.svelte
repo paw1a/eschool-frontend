@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
+    export let data;
 
 	import hljs from 'highlight.js/lib/core';
 	import 'highlight.js/styles/github-dark.css';
@@ -21,12 +22,10 @@
 
     import { initializeStores, Modal } from '@skeletonlabs/skeleton';
     import Header from "$lib/components/Header.svelte";
-    import Footer from "$lib/components/Footer.svelte";
     initializeStores();
 </script>
 
 <Modal />
 <Toast />
-<Header/>
+<Header session="{data?.session}"/>
 <slot/>
-<Footer/>

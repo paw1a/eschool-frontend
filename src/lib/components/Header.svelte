@@ -1,4 +1,6 @@
 <script lang="ts">
+	export let session;
+
     import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
     import {Autocomplete, AppBar} from "@skeletonlabs/skeleton";
     import { popup } from '@skeletonlabs/skeleton';
@@ -53,7 +55,13 @@
 					on:selection={onPopupDemoSelect}
 			/>
 		</div>
-		<a class="btn btn-md variant-ghost-surface" href="/auth/login">Log In</a>
-		<a class="btn btn-md variant-ghost-surface" href="/auth/register">Register</a>
-	</svelte:fragment>
+		{#if !session}
+			<a class="btn btn-md variant-ghost-surface" href="/auth/login">Log In</a>
+			<a class="btn btn-md variant-ghost-surface" href="/auth/register">Register</a>
+		{:else}
+			<form method="POST" action="/profile?/logout">
+				<button class="btn btn-md variant-ghost-surface" type="submit">Log Out</button>
+			</form>
+		{/if}
+		</svelte:fragment>
 </AppBar>

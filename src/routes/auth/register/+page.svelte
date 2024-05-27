@@ -12,8 +12,8 @@
         toastStore.trigger(t);
     }
 
-    if (form.error) {
-        toastDemo(form.error);
+    if (form?.error) {
+        toastDemo(form?.error);
     }
 </script>
 
@@ -39,7 +39,7 @@
 			</label>
 			<label class="label">
 				<span>Password</span>
-				<input class="input" type="password" name="password" value={form?.password ?? ''} placeholder="Enter password..." />
+				<input class="input" type="password" name="password" value='' placeholder="Enter password..." />
 			</label>
 			<button class="input btn btn-md variant-ghost-primary" type="submit">Register</button>
 		</form>
