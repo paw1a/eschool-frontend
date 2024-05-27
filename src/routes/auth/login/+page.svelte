@@ -1,0 +1,27 @@
+<script lang="ts">
+</script>
+
+<div class="flex justify-center h-full pt-16">
+	<div class="card p-4 w-modal shadow-xl space-y-4">
+		<form class="modal-form border border-surface-500 p-4 space-y-4 rounded-container-token">
+			<label class="label">
+				<span>Email</span>
+				<input class="input" type="email" placeholder="Enter email..." />
+			</label>
+			<label class="label">
+				<span>Password</span>
+				<input class="input" type="password" placeholder="Enter password..." />
+			</label>
+			<button class="input btn btn-md variant-ghost-primary" type="submit" name="submit">Log In</button>
+			<p>Have no account? <a class="anchor" href="/auth/register">Register here</a>.</p>
+		</form>
+	</div>
+</div>
+
+<style>
+    :global(body) {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+</style>
