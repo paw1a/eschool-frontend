@@ -3,7 +3,7 @@
 
 	import hljs from 'highlight.js/lib/core';
 	import 'highlight.js/styles/github-dark.css';
-	import { storeHighlightJs } from '@skeletonlabs/skeleton';
+    import {storeHighlightJs, Toast} from '@skeletonlabs/skeleton';
 	import xml from 'highlight.js/lib/languages/xml';
 	import css from 'highlight.js/lib/languages/css';
 	import javascript from 'highlight.js/lib/languages/javascript';
@@ -26,6 +26,7 @@
 </script>
 
 <Modal />
+<Toast />
 <Header/>
 <slot/>
 <Footer/>

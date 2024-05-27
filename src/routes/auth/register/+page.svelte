@@ -1,4 +1,20 @@
 <script lang="ts">
+    export let form;
+
+    import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+    const toastStore = getToastStore();
+
+    function toastDemo(error: string): void {
+        const t: ToastSettings = {
+            message: error,
+            background: 'variant-filled-error',
+        };
+        toastStore.trigger(t);
+    }
+
+    if (form.error) {
+        toastDemo(form.error);
+    }
 </script>
 
 <div class="flex justify-center h-full pt-5">
@@ -7,23 +23,23 @@
 		      method="POST" action="?/register">
 			<label class="label">
 				<span>Name</span>
-				<input class="input" type="text" name="name" placeholder="Enter name..." />
+				<input class="input" type="text" name="name" value={form?.name ?? ''} placeholder="Enter name..." />
 			</label>
 			<label class="label">
 				<span>Surname</span>
-				<input class="input" type="text" name="surname" placeholder="Enter surname..." />
+				<input class="input" type="text" name="surname" value={form?.surname ?? ''} placeholder="Enter surname..." />
 			</label>
 			<label class="label">
 				<span>Phone number</span>
-				<input class="input" type="tel" name="phone" placeholder="Enter phone number..." />
+				<input class="input" type="tel" name="phone" value={form?.phone ?? ''} placeholder="Enter phone number..." />
 			</label>
 			<label class="label">
 				<span>Email</span>
-				<input class="input" type="email" name="email" placeholder="Enter email..." />
+				<input class="input" type="email" name="email" value={form?.email ?? ''} placeholder="Enter email..." />
 			</label>
 			<label class="label">
 				<span>Password</span>
-				<input class="input" type="password" name="password" placeholder="Enter password..." />
+				<input class="input" type="password" name="password" value={form?.password ?? ''} placeholder="Enter password..." />
 			</label>
 			<button class="input btn btn-md variant-ghost-primary" type="submit">Register</button>
 		</form>

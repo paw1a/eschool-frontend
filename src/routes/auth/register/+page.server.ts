@@ -1,5 +1,5 @@
 import {apiRequest} from "$lib/api/api.ts";
-import {fail, redirect} from "@sveltejs/kit";
+import {redirect, fail} from "@sveltejs/kit";
 
 export const actions = {
     register: async ({request}) => {
@@ -19,7 +19,13 @@ export const actions = {
         })
 
         if (error) {
-            throw fail(401, error)
+            return fail(error.status, {
+                error: error.error,
+                name: name,
+                surname: surname,
+                phone: phone,
+                email: email,
+            })
         }
 
         console.log(data)
