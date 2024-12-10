@@ -4,7 +4,7 @@
     import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
 
-    function toastDemo(error: string): void {
+    function toastRegisterError(error: string): void {
         const t: ToastSettings = {
             message: error,
             background: 'variant-filled-error',
@@ -13,7 +13,7 @@
     }
 
     if (form?.error) {
-        toastDemo(form?.error);
+        toastRegisterError(form?.error);
     }
 </script>
 

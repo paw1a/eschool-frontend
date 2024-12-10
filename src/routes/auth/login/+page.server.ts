@@ -15,13 +15,14 @@ export const actions = {
         });
         if (error) {
             return fail(error.status, {
-                error: error.error
+                error: error.error,
+                email: email,
             });
         }
 
         console.log("logged in: " + token)
 
         setAuthToken({cookies, token});
-        throw redirect(302, "/profile")
+        throw redirect(302, "/me")
     }
 }

@@ -8,11 +8,11 @@
 
 <div class="container h-full mx-auto w-5/6 text-token py-3">
 	<div class="text-4xl">
-		<h1>COURSES</h1>
+		<h1>MY COURSES</h1>
 	</div>
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 		{#each courses as course}
-		<a class="card bg-initial card-hover overflow-hidden my-3" href={"/catalog/" + course.id}>
+		<a class="card bg-initial card-hover overflow-hidden my-3" href={"/me/courses/" + course.id}>
 			<header>
 				<div class="grid grid-cols-3 p-4">
 					<div class="col-span-2 p-1">
@@ -25,7 +25,6 @@
 			<hr class="opacity-50" />
 			<footer class="p-4 flex justify-start items-center space-x-4">
 				<div class="flex-auto flex justify-between items-center">
-					<h6 class="font-bold variant-filled-surface p-1" data-toc-ignore>{course.price} RUB</h6>
 					<small>Language: {course.language}</small>
 				</div>
 			</footer>

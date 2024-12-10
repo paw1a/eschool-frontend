@@ -19,7 +19,7 @@ export default {
 					{
 						name: 'vintage',
 						enhancements: true,
-					},
+					}
 				],
 			},
 		}),

@@ -1,13 +1,18 @@
 import axios from "axios";
-import {API_BASE_URL} from "$lib/utils/constants.ts";
 
-export async function apiRequest(url: string, method: string='get', payload: object) {
+export async function apiRequest(url: string, method: string = 'get', payload?: object, token?: string) {
+    let headers = {}
+    if (token) {
+        headers = {'Authorization': token}
+    }
+
     let data, error
     await axios({
         method: method,
-        url: API_BASE_URL + url,
+        url: '/api/v1' + url,
         withCredentials: true,
         data: payload,
+        headers: headers,
     })
     .then(resp => {
         data = resp.data;

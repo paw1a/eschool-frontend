@@ -2,7 +2,7 @@
 	export let session;
 
     import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
-    import {Autocomplete, AppBar} from "@skeletonlabs/skeleton";
+    import {Autocomplete, AppBar, Avatar} from "@skeletonlabs/skeleton";
     import { popup } from '@skeletonlabs/skeleton';
 
     let inputPopupDemo: string = '';
@@ -29,14 +29,17 @@
 
 <AppBar>
 	<svelte:fragment slot="lead">
-		<strong class="text-xl uppercase">Skeleton</strong>
+		<strong class="text-xl uppercase">Eschool</strong>
 	</svelte:fragment>
 	<svelte:fragment slot="default">
 		<a class="btn btn-md variant-soft-primary" href="/">
-			Catalog
+			CATALOG
 		</a>
-		<a class="btn btn-md variant-ghost-surface" href="/teaching">
-			Teaching
+		<a class="btn btn-md variant-ghost-surface" href="/me/courses">
+			LEARNING
+		</a>
+		<a class="btn btn-md variant-ghost-surface" href="/me/schools">
+			TEACHING
 		</a>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
@@ -56,12 +59,22 @@
 			/>
 		</div>
 		{#if !session}
-			<a class="btn btn-md variant-ghost-surface" href="/auth/login">Log In</a>
-			<a class="btn btn-md variant-ghost-surface" href="/auth/register">Register</a>
+			<a class="btn btn-md variant-ghost-surface" href="/auth/login">LOGIN</a>
+			<a class="btn btn-md variant-ghost-surface" href="/auth/register">REGISTER</a>
 		{:else}
-			<form method="POST" action="/profile?/logout">
-				<button class="btn btn-md variant-ghost-surface" type="submit">Log Out</button>
+			<form method="POST" action="/me?/logout">
+				<button class="btn btn-md variant-ghost-surface" type="submit">LOGOUT</button>
 			</form>
+			<a href="/me">
+				<Avatar
+						border="border-4 border-surface-300-600-token hover:!border-primary-500"
+						cursor="cursor-pointer"
+						width="w-10"
+						initials="PS"
+						fontSize="200"
+				/>
+			</a>
+
 		{/if}
 		</svelte:fragment>
 </AppBar>
