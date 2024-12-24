@@ -34,6 +34,5 @@ jobs:
             export AUTH_FINGERPRINT=fingerprint
 
             cd frontend
-            ls -la
-            npm install
-            npm run dev &
+            docker-compose down front
+            docker-compose up front
