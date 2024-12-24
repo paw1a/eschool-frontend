@@ -35,4 +35,4 @@ jobs:
 
             cd frontend
             docker-compose down front
-            docker-compose up front -d
+            docker-compose up -d front
