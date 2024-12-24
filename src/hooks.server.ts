@@ -3,8 +3,10 @@ import jwt from 'jsonwebtoken'
 
 export const handle = async ({event, resolve}) => {
     const authCookie = event.cookies.get('AuthorizationToken');
+    console.log('HOOK: ', authCookie);
     if (authCookie) {
         const token = authCookie.split(' ')[1];
+        console.log('TOK: ', token);
         try {
             const session = jwt.verify(token, AUTH_JWT_SECRET);
             if (session) {
