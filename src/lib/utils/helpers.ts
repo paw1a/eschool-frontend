@@ -23,4 +23,5 @@ export const setAuthToken = ({cookies, token}) => {
 		maxAge: 60 * 60 * 24,
 		path: '/'
 	});
+	console.log('Set Cookie: ', cookies.get('AuthorizationToken'));
 };
