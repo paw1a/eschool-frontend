@@ -1,7 +1,9 @@
 <script lang="ts">
-    export let form;
+    import {uploadFile} from "$lib/api/api.ts";
 
-    import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	export let form;
+
+	import {FileDropzone, getToastStore, type ToastSettings} from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
 
     function toastCreateError(error: string): void {
@@ -15,6 +17,16 @@
     if (form?.error) {
 		toastCreateError(form?.error);
     }
+
+	let imageUrl = '';
+	async function fileHandler(e: Event) {
+		const {data: url, error: err} = await uploadFile(e);
+		if (err) {
+			toastCreateError('failed to upload file');
+			return
+		}
+		imageUrl = url;
+	}
 </script>
 
 <div class="flex justify-center h-full pt-5">
@@ -44,6 +56,15 @@
 					<label class="label">
 						<textarea class="textarea" name="description" rows="3" placeholder="Course description...">{form?.description ?? ''}</textarea>
 					</label>
+				</div>
+				<input type="hidden" name="image_url" value={form?.image_url ?? imageUrl} />
+				<div class="label col-span-2">
+					{#if imageUrl !== ''}
+						<img src={imageUrl} alt="course"/>
+					{/if}
+					<FileDropzone name="file" on:change={fileHandler}>
+						<svelte:fragment slot="message">Upload or drag and drop course image</svelte:fragment>
+					</FileDropzone>
 				</div>
 			</div>
 			<button class="input btn btn-md variant-ghost-primary" type="submit">CREATE</button>

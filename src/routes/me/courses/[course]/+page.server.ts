@@ -1,6 +1,7 @@
 import {apiRequest} from "$lib/api/api.ts";
 import {redirect, error} from "@sveltejs/kit";
 import axios from "axios";
+import type {LessonStat} from "$lib/types.ts";
 
 export const load = async ({cookies, locals, params}) => {
     const session = locals.session;
@@ -19,6 +20,7 @@ export const load = async ({cookies, locals, params}) => {
         throw error(500, {message: lessonError.error})
     }
 
+    const stats: LessonStat[] = [];
     for (let i = 0; i < lessons.length; i++) {
         if (lessons[i].type === 'theory') {
             lessons[i].theory_url = lessons[i].theory_url.replace('minio', 'localhost');
@@ -32,7 +34,13 @@ export const load = async ({cookies, locals, params}) => {
             const {data: task} = await axios.get(lessons[i].tests[0].task_url);
             lessons[i].markdown = task;
         }
+        const {data: stat, error: statError} = await apiRequest('/courses/' + course.id +
+            '/lessons/' + lessons[i].id + '/stat', 'get', undefined, token);
+        if (statError) {
+            throw error(500, {message: err.error})
+        }
+        stats.push(stat);
     }
 
-    return {course, lessons};
+    return {course, lessons, stats, token};
 };

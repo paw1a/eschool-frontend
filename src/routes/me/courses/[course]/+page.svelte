@@ -1,8 +1,13 @@
 <script lang="ts">
-	import type {CourseBrief, Lesson} from "$lib/types.ts";
+	import type {CourseBrief, Lesson, LessonStat} from "$lib/types.ts";
 	import {Marked} from "marked";
 	import {markedHighlight} from "marked-highlight";
 	import hljs from "highlight.js";
+	import {apiRequest} from "$lib/api/api.ts";
+	import {error} from "@sveltejs/kit";
+	import type {ToastSettings} from "@skeletonlabs/skeleton";
+	import { getToastStore } from '@skeletonlabs/skeleton';
+	const toastStore = getToastStore();
 
 	const marked = new Marked(markedHighlight({
 		emptyLangClass: 'hljs',
@@ -17,11 +22,49 @@
 
 	const course = data.course as CourseBrief;
 	const lessons = data.lessons as Lesson[];
+	const stats = data.stats as LessonStat[];
 
 	let currIndex: number = 0;
 
-	function submit() {
+	let answer = '';
 
+	function toastCreateError(error: string): void {
+		const t: ToastSettings = {
+			message: error,
+			background: 'variant-filled-error',
+		};
+		toastStore.trigger(t);
+	}
+
+	async function submit(index: number) {
+		if (lessons[index].type == 'practice' && answer == '') {
+			toastCreateError('select test answer option');
+			return;
+		}
+
+		const token = data.token;
+		const {error: err} = await apiRequest('/courses/' + course.id +
+				'/lessons/' + lessons[index].id + '/stat', 'post', {
+			tests: [{
+				test_id: lessons[index].tests[0]?.id,
+				answer: answer,
+			}]
+		}, token);
+		if (err) {
+			throw error(500, {message: err.error})
+		}
+
+		const {data: stat, error: statError} = await apiRequest('/courses/' + course.id +
+				'/lessons/' + lessons[index].id + '/stat', 'get', undefined, token);
+		if (statError) {
+			throw error(500, {message: statError.error})
+		}
+		stats[index] = stat;
+
+		if (lessons[index].type == 'practice' && answer != lessons[index].tests[0].answer) {
+			toastCreateError('incorrect answer, try again');
+			return;
+		}
 	}
 </script>
 
@@ -32,11 +75,21 @@
 			<nav class="list-nav">
 				<ul>
 					{#each course.lessons as l, index}
-						<li class:variant-filled-surface={index === currIndex}>
-							<button class="btn btn-md px-10 w-full" on:click={() => currIndex = index}>
-								<span class="flex-auto p-2">{index + 1}. {l.title}</span>
-							</button>
-						</li>
+						{#if l.type === 'practice'}
+							<li class:variant-glass-success={stats[index].tests[0].score !== 0}
+								class:variant-filled-surface={stats[index].tests[0].score === 0 && currIndex === index}>
+								<button class="btn btn-md px-10 w-full" on:click={() => currIndex = index}>
+									<span class="flex-auto p-2">{index + 1}. {l.title}</span>
+								</button>
+							</li>
+						{:else}
+							<li class:variant-glass-success={stats[index].score !== 0}
+								class:variant-filled-surface={stats[index].score === 0 && currIndex === index}>
+								<button class="btn btn-md px-10 w-full" on:click={() => currIndex = index}>
+									<span class="flex-auto p-2">{index + 1}. {l.title}</span>
+								</button>
+							</li>
+						{/if}
 					{/each}
 				</ul>
 			</nav>
@@ -53,15 +106,22 @@
 			<div>
 				{#each lessons[currIndex].tests[0].options as option}
 					<div class="variant-ghost-surface flex items-center px-2 my-2">
-						<input class="radio" type="radio" name="answer" value={option}/>
+						<input class="radio" type="radio" name="answer" bind:group={answer} value={option}/>
 						<p class="mx-2 my-2">{option}</p>
 					</div>
 				{/each}
 			</div>
+		{:else if lessons[currIndex].type === 'video'}
+			<h1 class="text-3xl">{lessons[currIndex].title}</h1>
+			<video autoplay controls>
+				<source src={lessons[currIndex].video_url} type="video/mp4">
+				<track src={lessons[currIndex].video_url} kind="captions">
+				Your browser does not support the video tag.
+			</video>
 		{/if}
 
 		<div class="flex justify-between items-center">
-			<button type="button" class="btn btn-md variant-ghost-surface px-10 flex-end" on:click={submit}>
+			<button type="button" class="btn btn-md variant-ghost-surface px-10 flex-end" on:click={() => submit(currIndex)}>
 				SUBMIT
 			</button>
 		</div>

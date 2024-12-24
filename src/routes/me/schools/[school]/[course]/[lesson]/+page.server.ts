@@ -27,6 +27,7 @@ export const load = async ({cookies, locals, params}) => {
         const {data: task} = await axios.get(lesson.tests[0].task_url);
         return {lesson, task, token};
     }
+    return {lesson, token};
 };
 
 export const actions = {
@@ -100,5 +101,34 @@ export const actions = {
         }
 
         throw redirect(302, '/me/schools/' + params.school + '/' + params.course);
-    }
+    },
+
+    editVideoLesson: async ({request, cookies, params}) => {
+        const formData = await request.formData();
+        const title = String(formData.get('title'));
+        const videoUrl = String(formData.get('video_url'));
+        console.log(videoUrl);
+
+        if (title == '') {
+            return fail(400, {
+                error: 'title cannot be empty',
+            })
+        }
+
+        const token = cookies.get('AuthorizationToken');
+        const {error} = await apiRequest('/courses/' + params.course + '/lessons/' + params.lesson, 'patch', {
+            title: title,
+            video_url: videoUrl,
+        }, token)
+
+        if (error) {
+            return fail(error.status, {
+                error: error.error,
+                title: title,
+                video_url: videoUrl,
+            })
+        }
+
+        throw redirect(302, '/me/schools/' + params.school + '/' + params.course);
+    },
 }

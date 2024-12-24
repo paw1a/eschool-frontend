@@ -9,13 +9,15 @@ export const actions = {
         const name = String(formData.get('name'));
         const surname = String(formData.get('surname'));
         const phone = String(formData.get('phone'));
+        const avatarUrl = String(formData.get('avatar_url'));
 
-        const {data, error} = await apiRequest('/auth/sign-up', 'post', {
+        const {error} = await apiRequest('/auth/sign-up', 'post', {
             name: name,
             surname: surname,
             phone: phone,
             email: email,
             password: password,
+            avatar_url: avatarUrl,
         })
 
         if (error) {
@@ -25,10 +27,9 @@ export const actions = {
                 surname: surname,
                 phone: phone,
                 email: email,
+                avatar_url: avatarUrl,
             })
         }
-
-        console.log(data)
 
         throw redirect(303, '/auth/login')
     }

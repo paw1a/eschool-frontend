@@ -53,6 +53,21 @@ export type LessonBrief = {
     type: string,
 };
 
+export type TestStat = {
+    id: string,
+    test_id: string,
+    user_id: string,
+    score: number,
+};
+
+export type LessonStat = {
+    id: string,
+    lesson_id: string,
+    user_id: string,
+    score: number,
+    tests: TestStat[],
+};
+
 export type CourseBrief = {
     id: string;
     name: string;

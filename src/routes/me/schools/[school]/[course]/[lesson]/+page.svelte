@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {Tab, TabGroup} from "@skeletonlabs/skeleton";
+    import {FileDropzone, Tab, TabGroup} from "@skeletonlabs/skeleton";
     import { markedHighlight } from "marked-highlight";
     import hljs from 'highlight.js';
 
@@ -21,10 +21,10 @@
 
     import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
     import {Marked} from "marked";
+    import {uploadFile} from "$lib/api/api.ts";
     const toastStore = getToastStore();
 
     const lesson = data.lesson as Lesson;
-    const test = data.lesson.tests[0];
 
     let markdown = '';
     if (lesson.type === 'theory') {
@@ -48,12 +48,12 @@
     }
 
     function createOption() {
-        test.options = [...test.options, ''];
+        lesson.tests[0].options = [...lesson.tests[0].options, ''];
     }
 
     function deleteOption(index: number) {
-        test.options.splice(index, 1);
-        test.options = [...test.options];
+        lesson.tests[0].options.splice(index, 1);
+        lesson.tests[0].options = [...lesson.tests[0].options];
     }
 </script>
 
@@ -107,10 +107,10 @@
                 </svelte:fragment>
             </TabGroup>
             <div>
-                {#each test.options as option, index}
+                {#each lesson.tests[0].options as option, index}
                     <div class="col-span-2 variant-ghost-surface flex justify-between items-center px-2 my-2">
-                        <input class="radio" type="radio" name="answer" value={option} bind:group={test.answer} />
-                        <input name="options[]" class="input variant-ghost-surface mx-2 my-2" type="text" bind:value={test.options[index]}/>
+                        <input class="radio" type="radio" name="answer" value={option} bind:group={lesson.tests[0].answer} />
+                        <input name="options[]" class="input variant-ghost-surface mx-2 my-2" type="text" bind:value={lesson.tests[0].options[index]}/>
                         <div class="flex justify-center">
                             <button type="button" class="btn btn-md variant-ghost-error mx-1 right-0" on:click={() =>
                             deleteOption(index)}>✖</button>
@@ -123,6 +123,28 @@
         </form>
     </div>
 </div>
+
+{:else if lesson.type === 'video'}
+    <div class="flex justify-center h-full pt-5">
+        <div class="card p-4 w-modal shadow-xl space-y-4">
+            <form class="modal-form border border-surface-500 p-4 space-y-4 rounded-container-token"
+                  method="POST" action="?/editVideoLesson">
+                <div class="col-span-1">
+                    <label class="label">
+                        <input class="input" type="text" name="title" value={form?.title ?? lesson.title}
+                               placeholder="Lesson title..." />
+                    </label>
+                </div>
+                <div class="col-span-1">
+                    <label class="label">
+                        <input class="input" type="text" name="video_url" value={form?.video_url ?? lesson.video_url}
+                               placeholder="Video link..." />
+                    </label>
+                </div>
+                <button class="input btn btn-md variant-ghost-primary" type="submit">SAVE</button>
+            </form>
+        </div>
+    </div>
 
 {/if}
 

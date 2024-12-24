@@ -1,69 +1,30 @@
 <script lang="ts">
 	export let session;
-
-    import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
-    import {Autocomplete, AppBar, Avatar} from "@skeletonlabs/skeleton";
-    import { popup } from '@skeletonlabs/skeleton';
-
-    let inputPopupDemo: string = '';
-    type FlavorOption = AutocompleteOption<string, { healthy: boolean }>;
-    const flavorOptions: FlavorOption[] = [
-        { label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
-        { label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
-        { label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
-        { label: 'Neapolitan', value: 'neapolitan', keywords: 'mix, strawberry, chocolate, vanilla', meta: { healthy: false } },
-        { label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
-        { label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
-    ];
-
-    function onPopupDemoSelect(event: CustomEvent<FlavorOption>): void {
-        inputPopupDemo = event.detail.label;
-    }
-
-    let popupSettings: PopupSettings = {
-        event: 'focus-click',
-        target: 'popupAutocomplete',
-        placement: 'bottom',
-    };
+	import {AppBar, Avatar} from "@skeletonlabs/skeleton";
 </script>
 
 <AppBar>
-	<svelte:fragment slot="lead">
+	<div slot="lead">
 		<strong class="text-xl uppercase">Eschool</strong>
-	</svelte:fragment>
-	<svelte:fragment slot="default">
-		<a class="btn btn-md variant-soft-primary" href="/">
+	</div>
+	<div slot="default" class="hidden md:flex">
+		<a class="btn btn-md variant-soft-primary mx-0.5" href="/">
 			CATALOG
 		</a>
-		<a class="btn btn-md variant-ghost-surface" href="/me/courses">
+		<a class="btn btn-md variant-ghost-surface mx-0.5" href="/me/courses">
 			LEARNING
 		</a>
-		<a class="btn btn-md variant-ghost-surface" href="/me/schools">
+		<a class="btn btn-md variant-ghost-surface mx-0.5" href="/me/schools">
 			TEACHING
 		</a>
-	</svelte:fragment>
-	<svelte:fragment slot="trail">
-		<input
-				class="input autocomplete"
-				type="search"
-				name="autocomplete-search"
-				bind:value={inputPopupDemo}
-				placeholder="Search..."
-				use:popup={popupSettings}
-		/>
-		<div data-popup="popupAutocomplete" class="card w-full max-w-sm max-h-64 p-4 overflow-y-auto" tabindex="-1">
-			<Autocomplete
-					bind:input={inputPopupDemo}
-					options={flavorOptions}
-					on:selection={onPopupDemoSelect}
-			/>
-		</div>
+	</div>
+	<div slot="trail" class="hidden md:flex">
 		{#if !session}
-			<a class="btn btn-md variant-ghost-surface" href="/auth/login">LOGIN</a>
-			<a class="btn btn-md variant-ghost-surface" href="/auth/register">REGISTER</a>
+			<a class="btn btn-md variant-ghost-surface mx-0.5" href="/auth/login">LOGIN</a>
+			<a class="btn btn-md variant-ghost-surface mx-0.5" href="/auth/register">REGISTER</a>
 		{:else}
 			<form method="POST" action="/me?/logout">
-				<button class="btn btn-md variant-ghost-surface" type="submit">LOGOUT</button>
+				<button class="btn btn-md variant-ghost-surface mx-1" type="submit">LOGOUT</button>
 			</form>
 			<a href="/me">
 				<Avatar
@@ -74,7 +35,6 @@
 						fontSize="200"
 				/>
 			</a>
-
 		{/if}
-		</svelte:fragment>
+	</div>
 </AppBar>

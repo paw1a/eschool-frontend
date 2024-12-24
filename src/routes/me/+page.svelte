@@ -9,6 +9,9 @@
 	<div class="card p-4 w-modal shadow-xl space-y-4">
 		<h1 class="text-2xl text-center">Profile</h1>
 		<div class="modal-form border border-surface-500 p-4 space-y-4 rounded-container-token">
+			{#if user.avatar_url !== ''}
+				<img src={user.avatar_url} alt="avatar">
+			{/if}
 			<div class="grid grid-cols-3">
 				<span class="font-bold p-1.5">First name:</span>
 				<input type="text" class="input col-span-2" value={user.name} disabled>

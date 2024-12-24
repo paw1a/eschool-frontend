@@ -13,5 +13,5 @@ export const load = async ({cookies, locals}) => {
         throw error(500, {message: err.error})
     }
 
-    return {schools};
+    return {schools, token};
 };

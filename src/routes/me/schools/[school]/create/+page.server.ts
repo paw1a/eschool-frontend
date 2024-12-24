@@ -8,6 +8,7 @@ export const actions = {
         const description = String(formData.get('description'));
         const price = Number(String(formData.get('price')));
         const language = String(formData.get('language'));
+        const imageUrl = String(formData.get('image_url'));
 
         const token = cookies.get('AuthorizationToken');
         const {error} = await apiRequest('/schools/' + params.school + '/courses', 'post', {
@@ -16,6 +17,7 @@ export const actions = {
             level: 1,
             price: price,
             language: language,
+            image_url: imageUrl,
         }, token)
 
         if (error) {
@@ -25,6 +27,7 @@ export const actions = {
                 description: description,
                 price: price,
                 language: language,
+                image_url: imageUrl,
             })
         }
 
